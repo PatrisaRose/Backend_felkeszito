@@ -1,0 +1,51 @@
+composer create-project laravel/laravel +projekt neve,
+
+.env -> DB_DATABASE megváltozatása
+
+belelépés a mappádba -> cd .\mappaneve\
+
+majd php artisan serve
+
+nyitunk egy powershell terminált
+
+majd belelépés a mappádba -> cd .\mappaneve\ (mappanevét elkezded maj TAB)
+
+model és factory létrehozása php artisan make:model TáblaNeve -mf
+
+majd app > Models > TáblaNeve.php-ba belépés
+
+megadni az elsődleges kulcsot:
+protected $primaryKey = 'elsodlegeskulcsNeve';
+
+
+majd a tobbi sor hozzáadása a User.php-ból kimásolva:
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+    ];
+
+majd megváltoztatjuk az adatokat a migrációban típusnak megfelelően mint:
+Schema::create('airlines', function (Blueprint $table) {
+            $table->id('airlines_id');
+            $table->string('name');
+            $table->string('country');
+            $table->timestamps();
+        });
+
+ha esetleg van benne idegen kulcs akkor: $table->foreignId('airline_id')->references('airline_id')->on('airline');
+
+intergernél:  $table->integer('limit')->default(150);
+
+utána migrálást hajtunk végre: php artisan migrate
+
+majd a factoryben feltöltjük adatokkal:
+return [
+            'name' => fake('hu_HU')->name(),
+            'country' => fake('hu_HU')->country(),
+        ];
+DataSeederben: \App\Models\Airline::factory(10)->create(); <- levenni a kommentet és átírni a Tábla nevet
+
+majd php artisan db:seed
+
+
